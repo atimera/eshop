@@ -5,6 +5,8 @@ import com.atimera.eshop.backend.entity.Contact;
 import com.atimera.eshop.backend.service.ContactService;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
 @Route("")
@@ -12,15 +14,19 @@ public class MainView extends VerticalLayout {
 
     private final Grid<Contact> grid = new Grid<>(Contact.class);
     private final ContactService contactService;
+    private final TextField filterText = new TextField(); ;
 
     public MainView(ContactService contactService) {
         this.contactService = contactService;
         addClassName("list-view"); // class css pour la MainView
         setSizeFull(); // prend toute la largeur du navigateur
+        configureFilter(); // Configure le champ de filtre
         configureGrid();
         updateList();
 
-        add(grid);
+        // Ajoute le champ juste avant la grille.
+        // et comme on est dans un VerticalLayout, le champ sera au dessus
+        add(filterText, grid);
     }
 
     // Configure
@@ -47,9 +53,22 @@ public class MainView extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
+    // Champ pour filtrer la liste par nom ou prenom
+    private void configureFilter() {
+        filterText.setPlaceholder("Filtrer par nom...");
+        filterText.setClearButtonVisible(true);
+
+        // évite de lancer un event à chaque value change
+        // attend un court instant après la saisie avant de lancer
+        // l'action à faire c-à-d l'appel à la bdd
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        // Met à jour la requête
+        filterText.addValueChangeListener(e -> updateList());
+    }
+
     // Récupère la liste des contacts dans la base
     private void updateList() {
-        grid.setItems(contactService.findAll());
+        grid.setItems(contactService.findAll(filterText.getValue()));
     }
 
 }
