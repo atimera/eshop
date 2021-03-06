@@ -1,22 +1,23 @@
-package com.atimera.eshop.ui;
+package com.atimera.eshop.ui.view.list;
 
 import com.atimera.eshop.backend.entity.Company;
 import com.atimera.eshop.backend.entity.Contact;
 import com.atimera.eshop.backend.service.CompanyService;
 import com.atimera.eshop.backend.service.ContactService;
+import com.atimera.eshop.ui.MainLayout;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@Route("")
-@CssImport("./styles/shared-styles.css") // Chemin relatif au dossier frontend <=> ./
-public class MainView extends VerticalLayout {
+@Route(value="", layout = MainLayout.class)
+@PageTitle("Contacts | E-Shop")
+public class ListView extends VerticalLayout {
 
     private final Grid<Contact> grid = new Grid<>(Contact.class);
     private final ContactService contactService;
@@ -24,7 +25,7 @@ public class MainView extends VerticalLayout {
     private final TextField filterText = new TextField();
     private final ContactForm form;
 
-    public MainView(ContactService contactService, CompanyService companyService) {
+    public ListView(ContactService contactService, CompanyService companyService) {
         this.contactService = contactService;
 
 

@@ -1,4 +1,4 @@
-package com.atimera.eshop.ui;
+package com.atimera.eshop.ui.view.list;
 
 import com.atimera.eshop.backend.entity.Company;
 import com.atimera.eshop.backend.entity.Contact;
