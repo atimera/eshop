@@ -37,7 +37,7 @@ public class MainLayout extends AppLayout {
         H1 logo = new H1("E-Shop");
         logo.addClassName("logo");
 
-        Anchor logout = new Anchor("logout", "Log out");
+        Anchor logout = new Anchor("logout", "Se déconnecter");
 
         HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo, logout);
         header.expand(logo);
