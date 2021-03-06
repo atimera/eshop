@@ -12,8 +12,19 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.PWA;
 
 
+@PWA(
+        name = "E-Shop",
+        shortName = "eShop",
+        offlineResources = {
+                "./styles/offline.css",
+                "./images/offline.png"},
+        enableInstallPrompt = true,
+        iconPath = "./icons/icon.png",
+        offlinePath = "./offline.html"
+)
 @CssImport("./styles/shared-styles.css") // Chemin relatif au dossier frontend <=> ./
 public class MainLayout extends AppLayout {
 
