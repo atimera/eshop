@@ -2,6 +2,7 @@ package com.atimera.eshop.ui;
 
 import com.atimera.eshop.backend.entity.Company;
 import com.atimera.eshop.backend.entity.Contact;
+import com.atimera.eshop.backend.service.CompanyService;
 import com.atimera.eshop.backend.service.ContactService;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
@@ -17,18 +18,21 @@ public class MainView extends VerticalLayout {
 
     private final Grid<Contact> grid = new Grid<>(Contact.class);
     private final ContactService contactService;
+    private final CompanyService companyService;
     private final TextField filterText = new TextField();
     private final ContactForm form;
 
-    public MainView(ContactService contactService) {
+    public MainView(ContactService contactService, CompanyService companyService) {
         this.contactService = contactService;
+        this.companyService = companyService;
+
         addClassName("list-view"); // class css pour la MainView
         setSizeFull(); // prend toute la largeur du navigateur
 
         configureFilter(); // Configure le champ de filtre
         configureGrid();
 
-        form = new ContactForm(); // on initialise le formulaire
+        form = new ContactForm(companyService.findAll()); // on initialise le formulaire
 
         Div content = new Div(grid, form); // ajoute les 2 composants dans une div
         content.addClassName("content");
