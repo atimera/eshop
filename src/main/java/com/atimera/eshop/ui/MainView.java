@@ -1,32 +1,43 @@
-package com.atimera.eshop.views.main;
+package com.atimera.eshop.ui;
 
 import com.atimera.eshop.backend.entity.Company;
 import com.atimera.eshop.backend.entity.Contact;
 import com.atimera.eshop.backend.service.ContactService;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
 @Route("")
+@CssImport("./styles/shared-styles.css") // Chemin relatif au dossier frontend <=> ./
 public class MainView extends VerticalLayout {
 
     private final Grid<Contact> grid = new Grid<>(Contact.class);
     private final ContactService contactService;
-    private final TextField filterText = new TextField(); ;
+    private final TextField filterText = new TextField();
+    private final ContactForm form;
 
     public MainView(ContactService contactService) {
         this.contactService = contactService;
         addClassName("list-view"); // class css pour la MainView
         setSizeFull(); // prend toute la largeur du navigateur
+
         configureFilter(); // Configure le champ de filtre
         configureGrid();
-        updateList();
 
-        // Ajoute le champ juste avant la grille.
+        form = new ContactForm(); // on initialise le formulaire
+
+        Div content = new Div(grid, form); // ajoute les 2 composants dans une div
+        content.addClassName("content");
+        content.setSizeFull();
+
+        // Ajoute le champ juste avant les autres composants.
         // et comme on est dans un VerticalLayout, le champ sera au dessus
-        add(filterText, grid);
+        add(filterText, content);
+        updateList();
     }
 
     // Configure
