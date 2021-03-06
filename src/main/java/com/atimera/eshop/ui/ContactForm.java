@@ -13,15 +13,15 @@ import com.vaadin.flow.component.textfield.TextField;
 
 public class ContactForm extends FormLayout {
 
-    TextField firstName = new TextField("First name");
-    TextField lastName = new TextField("Last name");
+    TextField firstName = new TextField("Prénom");
+    TextField lastName = new TextField("Nom");
     EmailField email = new EmailField("Email");
-    ComboBox<Contact.Status> status = new ComboBox<>("Status");
-    ComboBox<Company> company = new ComboBox<>("Company");
+    ComboBox<Contact.Status> status = new ComboBox<>("Statut");
+    ComboBox<Company> company = new ComboBox<>("Entreprise");
 
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button close = new Button("Cancel");
+    Button save = new Button("Ajouter");
+    Button delete = new Button("Supprimer");
+    Button close = new Button("Annuler");
 
     public ContactForm() {
         addClassName("contact-form");
