@@ -4,9 +4,11 @@ import com.atimera.eshop.backend.entity.Company;
 import com.atimera.eshop.backend.entity.Contact;
 import com.atimera.eshop.backend.service.CompanyService;
 import com.atimera.eshop.backend.service.ContactService;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -18,30 +20,31 @@ public class MainView extends VerticalLayout {
 
     private final Grid<Contact> grid = new Grid<>(Contact.class);
     private final ContactService contactService;
-    private final CompanyService companyService;
+    private CompanyService companyService;
     private final TextField filterText = new TextField();
     private final ContactForm form;
 
     public MainView(ContactService contactService, CompanyService companyService) {
         this.contactService = contactService;
-        this.companyService = companyService;
+
 
         addClassName("list-view"); // class css pour la MainView
         setSizeFull(); // prend toute la largeur du navigateur
-
-        configureFilter(); // Configure le champ de filtre
         configureGrid();
 
+        getToolBar(); // Configure le champ de filtre
+
         form = new ContactForm(companyService.findAll()); // on initialise le formulaire
+        form.addListener(ContactForm.SaveEvent.class, this::saveContact);
+        form.addListener(ContactForm.DeleteEvent.class, this::deleteContact);
+        form.addListener(ContactForm.CloseEvent.class, e -> closeEditor());
 
         Div content = new Div(grid, form); // ajoute les 2 composants dans une div
         content.addClassName("content");
         content.setSizeFull();
 
-        // Ajoute le champ juste avant les autres composants.
-        // et comme on est dans un VerticalLayout, le champ sera au dessus
-        add(filterText, content);
-        updateList();
+        add(getToolBar(), content);
+        updateListAndCloseEditor();
     }
 
     // Configure
@@ -66,24 +69,72 @@ public class MainView extends VerticalLayout {
 
         // Chaque colonne de la grille une largeur auto
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+        grid.asSingleSelect().addValueChangeListener(
+                event -> editContact(event.getValue()));
     }
 
     // Champ pour filtrer la liste par nom ou prenom
-    private void configureFilter() {
+    private HorizontalLayout getToolBar() {
         filterText.setPlaceholder("Filtrer par nom...");
         filterText.setClearButtonVisible(true);
-
-        // évite de lancer un event à chaque value change
-        // attend un court instant après la saisie avant de lancer
-        // l'action à faire c-à-d l'appel à la bdd
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        // Met à jour la requête
         filterText.addValueChangeListener(e -> updateList());
+
+        Button addContactButton = new Button("Ajouter un contact", click -> addContact());
+
+        HorizontalLayout toolBar = new HorizontalLayout(filterText, addContactButton);
+        toolBar.addClassName("toolbar");
+
+        return toolBar;
     }
+
+    private void addContact() {
+        grid.asSingleSelect().clear();
+        editContact(new Contact());
+    }
+
+    // Éditer un contact si sélection
+    private void editContact(Contact contact) {
+        if(contact == null) {
+            closeEditor(); // deselection => ferme l'éditeur
+        } else {
+            form.setVisible(true);
+            form.setContact(contact); // préremplie le formulaire
+            addClassName("editing"); // MainView Class
+        }
+    }
+
+    // Ferme le formulaire
+    private void closeEditor() {
+        System.out.println("Fermeture de l'éditeur...");
+        form.setContact(null); // vide le bean du formulaire
+        form.setVisible(false); // rend le form invisible
+        removeClassName("editing"); // enlève la class .edfiting à MainView
+    }
+
 
     // Récupère la liste des contacts dans la base
     private void updateList() {
         grid.setItems(contactService.findAll(filterText.getValue()));
+    }
+
+    // Suppression
+    private void deleteContact(ContactForm.DeleteEvent evt) {
+        contactService.delete(evt.getContact());
+        updateListAndCloseEditor();
+    }
+
+    // met à jour la liste et ferme l'éditeur
+    private void updateListAndCloseEditor() {
+        updateList();
+        closeEditor();
+    }
+
+    // Enregistrement en base puis fermeture
+    private void saveContact(ContactForm.SaveEvent event) {
+        contactService.save(event.getContact());
+        updateListAndCloseEditor();
     }
 
 }

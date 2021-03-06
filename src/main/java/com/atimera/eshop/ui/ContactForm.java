@@ -29,7 +29,7 @@ public class ContactForm extends FormLayout {
     ComboBox<Contact.Status> status = new ComboBox<>("Statut");
     ComboBox<Company> company = new ComboBox<>("Entreprise");
 
-    Button save = new Button("Ajouter");
+    Button save = new Button("Sauvegarder");
     Button delete = new Button("Supprimer");
     Button close = new Button("Annuler");
 
