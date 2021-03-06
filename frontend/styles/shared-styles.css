@@ -1,9 +1,5 @@
 /* Main layout */
 
-body {
-    background-color: grey
-}
-
 a[highlight] {
     font-weight: bold;
     text-decoration: underline;
