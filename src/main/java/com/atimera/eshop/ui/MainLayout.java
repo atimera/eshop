@@ -2,6 +2,7 @@ package com.atimera.eshop.ui;
 
 import com.atimera.eshop.ui.view.dashboard.DashboardView;
 import com.atimera.eshop.ui.view.list.ListView;
+import com.atimera.eshop.ui.view.product.ProductView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -21,7 +22,6 @@ import com.vaadin.flow.server.PWA;
         offlineResources = {
                 "./styles/offline.css",
                 "./images/offline.png"},
-        enableInstallPrompt = true,
         iconPath = "./icons/icon.png",
         offlinePath = "./offline.html"
 )
@@ -52,13 +52,15 @@ public class MainLayout extends AppLayout {
     }
 
     private void createDrawer() {
-        // La route
-        RouterLink listLink = new RouterLink("Liste", ListView.class);
-        listLink.setHighlightCondition(HighlightConditions.sameLocation());
+
+        // Liste des contacts
+        RouterLink listContactsLink = new RouterLink("Liste contacts", ListView.class);
+        listContactsLink.setHighlightCondition(HighlightConditions.sameLocation());
 
         // Ajout des routes au drawer
         addToDrawer(new VerticalLayout(
-                listLink,
+                listContactsLink,
+                new RouterLink("Produits", ProductView.class),
                 new RouterLink("Tableau de bord", DashboardView.class)
         ));
     }

@@ -1,6 +1,5 @@
 package com.atimera.eshop.security;
 
-import com.atimera.eshop.ui.view.login.LoginView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.server.ServiceInitEvent;
@@ -19,9 +18,11 @@ public class ConfigureUIServiceInitListener implements VaadinServiceInitListener
 	}
 
 	private void authenticateNavigation(BeforeEnterEvent event) {
-		if (!LoginView.class.equals(event.getNavigationTarget())
-		    && !SecurityUtils.isUserLoggedIn()) { 
-			event.rerouteTo(LoginView.class);
-		}
+		// POUR LE DEV ON désactive les redirection pour authentification
+		// -----------
+//		if (!LoginView.class.equals(event.getNavigationTarget())
+//		    && !SecurityUtils.isUserLoggedIn()) {
+//			event.rerouteTo(LoginView.class);
+//		}
 	}
 }
