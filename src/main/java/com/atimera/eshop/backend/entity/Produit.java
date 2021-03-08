@@ -5,13 +5,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Product extends AbstractEntity implements Cloneable {
+public class Produit extends AbstractEntity implements Cloneable {
 
     private String name;
 
     @ManyToOne()
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Categorie category;
 
 
     public String getName() {
@@ -22,11 +22,11 @@ public class Product extends AbstractEntity implements Cloneable {
         this.name = name;
     }
 
-    public Category getCategory() {
+    public Categorie getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(Categorie category) {
         this.category = category;
     }
 }

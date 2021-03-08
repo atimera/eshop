@@ -1,5 +1,6 @@
 package com.atimera.eshop.ui;
 
+import com.atimera.eshop.ui.view.client.ClientView;
 import com.atimera.eshop.ui.view.dashboard.DashboardView;
 import com.atimera.eshop.ui.view.list.ListView;
 import com.atimera.eshop.ui.view.product.ProductView;
@@ -59,8 +60,9 @@ public class MainLayout extends AppLayout {
 
         // Ajout des routes au drawer
         addToDrawer(new VerticalLayout(
-                listContactsLink,
+                new RouterLink("Clients", ClientView.class),
                 new RouterLink("Produits", ProductView.class),
+                listContactsLink,
                 new RouterLink("Tableau de bord", DashboardView.class)
         ));
     }

@@ -7,18 +7,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-public class Category extends AbstractEntity implements Cloneable {
+public class Categorie extends AbstractEntity implements Cloneable {
 
     private String name;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
-    private final List<Product> products = new LinkedList<>();
+    private final List<Produit> produits = new LinkedList<>();
 
 
-    public Category() {
+    public Categorie() {
     }
 
-    public Category(String name) {
+    public Categorie(String name) {
         this.name = name;
     }
 
@@ -30,7 +30,7 @@ public class Category extends AbstractEntity implements Cloneable {
         this.name = name;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<Produit> getProducts() {
+        return produits;
     }
 }

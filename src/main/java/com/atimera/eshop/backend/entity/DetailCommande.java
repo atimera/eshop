@@ -1,9 +1,9 @@
 package com.atimera.eshop.backend.entity;
 
-public class OrderDetail {
+public class DetailCommande {
 
-    private Order order;
-    private Product product;
+    private Commande commande;
+    private Produit produit;
     private Integer quantity;
     private Float subtotal;
 }

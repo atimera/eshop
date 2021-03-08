@@ -2,9 +2,9 @@ package com.atimera.eshop.backend.entity;
 
 import java.time.LocalDate;
 
-public class Order {
+public class Commande {
 
-    private Customer customer;
+    private Client client;
     private LocalDate date;
     private Float total;
     private String status;
